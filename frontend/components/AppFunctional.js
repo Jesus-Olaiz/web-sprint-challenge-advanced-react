@@ -12,14 +12,11 @@ export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
-  
-
-  const [moves, setMoves] = useState(initialSteps)
-  const [index, setIndex] = useState(initialIndex)
+    const [index, setIndex] = useState(initialIndex)
   const [message, setMessage] = useState(initialMessage)
 
 
-  const [formData, setFormData] = useState({"x": 2, "y": 2, "steps": 0, "email": initialEmail, "message": message})
+  const [formData, setFormData] = useState({"x": 2, "y": 2, "steps": initialSteps, "email": initialEmail, "message": initialMessage})
 
 
 
@@ -27,7 +24,7 @@ export default function AppFunctional(props) {
     let y = Math.floor(index/3) + 1
     let x = index % 3 + 1
 
-    setFormData({...formData, x : x, y: y})
+    return [x,y]
 
 
     
@@ -36,10 +33,8 @@ export default function AppFunctional(props) {
 
   function reset() {
     // Use this helper to reset all states to their initial values.
-    setIndex(4)
-    setMoves(0)
-    getCoords(initialIndex)
-    setFormData({...formData, x: 2, y: 2, email: ""})
+    setIndex(initialIndex)
+    setFormData({...formData, x: 2, y: 2, email: "",steps: initialSteps, message: ""})
     setMessage("")
 
   }
@@ -49,28 +44,24 @@ export default function AppFunctional(props) {
       if((index === 0) || (index === 3) || (index===6)){
         return index 
       }
-      setMoves(moves + 1)
       return index - 1
     }
     if (direction === "right"){
       if((index === 2) || (index === 5) || (index === 8)){
         return index
       }
-      setMoves(moves + 1)
       return index + 1
     }
     if (direction === "up"){
       if(index <= 2){
         return index
       }
-      setMoves(moves + 1)
       return index - 3
     }
     if (direction === "down"){
       if(index >= 6){
         return index
       }
-      setMoves(moves + 1)
       return index + 3
     }
 
@@ -83,12 +74,14 @@ export default function AppFunctional(props) {
 
     setIndex(getNextIndex(evt.target.id))
     
-    getCoords(getNextIndex(evt.target.id))
     
+
     if(getNextIndex(evt.target.id) === index){
       setMessage(`You can't go ${evt.target.id}`)
     }
     else{
+      let coords = getCoords(getNextIndex(evt.target.id))
+      setFormData({...formData, steps: formData.steps + 1, x: coords[0], y: coords[1]})
       setMessage("")
     }
    
@@ -119,7 +112,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinates ({formData.x}, {formData.y})</h3>
-        <h3 id="steps">You moved {moves} {moves === 1 ? "time" : "times"}</h3>
+        <h3 id="steps">You moved {formData.steps} {formData.steps === 1 ? "time" : "times"}</h3>
       </div>
       <div id="grid">
         {

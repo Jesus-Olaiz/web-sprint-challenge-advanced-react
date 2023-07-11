@@ -34,7 +34,7 @@ export default class AppClass extends React.Component {
 
 
   reset() {
-    this.setState({index: 4, steps: 0})
+    this.setState(initialState)
     this.getCoords(initialIndex)
     this.setState({email: "", message: ""})
   }
@@ -64,7 +64,7 @@ export default class AppClass extends React.Component {
       return this.state.index - 3
     }
     if (direction === "down"){
-      // YOU WERE MESSING WITH THIS ONE TO SEE IF THE VALUE CHANGED APPROPRIATELY
+      
       if(this.state.index >= 6){
         return this.state.index
       }
@@ -98,7 +98,7 @@ export default class AppClass extends React.Component {
 
   onChange(evt) {
     this.setState({[evt.target.id] : evt.target.value})
-    console.log(this.state.email)
+    
   }
 
 
